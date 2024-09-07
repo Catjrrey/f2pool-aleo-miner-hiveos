@@ -1,16 +1,14 @@
 #!/bin/bash
 
-WORKSPACE="/hive/miners/custom/$CUSTOM_NAME"
-CONF_PATH="$WORKSPACE/aleo.conf"
+source $MINER_DIR/$CUSTOM_MINER/h-manifest.conf
 
 IP_PORT=$CUSTOM_URL
 ACCOUNTNAME=$CUSTOM_TEMPLATE
-CUDA=$CUSTOM_PASS
 
-pkill -9 aleo-miner
+pkill -9 $APP_NAME
 
 > /run/hive/miner.1
-rm "$CONF_PATH"
+> $CONF_PATH
 
 GPU_STR=""
 if command -v nvidia-smi >/dev/null 2>&1; then
@@ -34,5 +32,5 @@ echo "${CUSTOM_USER_CONFIG}" >> $CONF_PATH
 nv=$(echo "${CUSTOM_USER_CONFIG}" | grep "nvtool")
 echo $nv
 if [[ $nv != "" ]];then
-eval $nv 
+eval $nv
 fi

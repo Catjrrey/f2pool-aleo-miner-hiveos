@@ -1,9 +1,10 @@
 #!/bin/bash
 
-WORKSPACE="$(cd $(dirname $0) && pwd)"
-LOG_PATH="$WORKSPACE/aleo-miner.log"
-APP_PATH="$WORKSPACE/aleo-miner"
-CONF_PATH="$WORKSPACE/aleo.conf"
+source h-manifest.conf
+
+LOG="$LOG_PATH/aleo-miner-$(date +'%Y-%m-%d').log"
 CONF=$(sed -n '1p' $CONF_PATH)
 
-./aleo-miner $CONF $@ 2>&1 | tee --append ${CUSTOM_LOG_BASENAME}miner.log
+find "$LOG_PATH" -name "*miner-*.log" -type f -mtime +7 -exec rm -f {} \;
+
+$APP_PATH $CONF $@ 2>&1 | tee --append "$LOG"

@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
-cd /hive/miners/custom/f2poolAleo_2.11.44
-CONF_PATH="/hive/miners/custom/f2poolAleo_2.11.44/aleo.conf"
+
+source $MINER_DIR/$CUSTOM_MINER/h-manifest.conf
+
 TIME=$(sed -n '2p' $CONF_PATH)
 
 uptime=$(($(date +%s)-TIME))
 retime=$(cat $CONF_PATH | grep restarttime | awk '{print $2}')
 
-algo='aleo'
-version="2.11.44"
 stats=""
-unit="hs"
 khs=0
 hs=()
 temp=()
@@ -50,9 +48,9 @@ stats=$(jq -nc --argjson hs "$hs_json" \
 	--argjson khs "$khs_num" \
 	--argjson bus_numbers "$numbers_json" \
 	--arg uptime "$uptime" \
-	--arg hs_units "$unit" \
-	--arg ver "$version" \
-	--arg algo "$algo" \
+	--arg hs_units "$UNIT" \
+	--arg ver "$CUSTOM_VERSION" \
+	--arg algo "$ALOG" \
 	'{$temp, $hs, $fan, "bus_numbers":$bus_numbers, $uptime, "hs_units":$hs_units, "ver":$ver, "algo":$algo, "khs":$khs}')
 
 echo "$stats"
